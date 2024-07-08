@@ -21,7 +21,6 @@
     "socket",
     "push-notifications",
     "notifications",
-    "socket.io",
     "real-time-web",
     "communication",
     "server",
