@@ -1,0 +1,14 @@
+.idea/
+.vscode/
+node_modules/
+build/
+tmp/
+temp/
+.env
+
+.DS_Store
+*.aof
+
+db_data/
+services/db/data/
+services/cache/data/

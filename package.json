@@ -1,10 +1,9 @@
 {
   "name": "relaybox",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "A robust and scalable real-time infrastructure service with comprehensive WebSocket support, designed to facilitate live updates, event-driven communication, and seamless data streaming. Ideal for building real-time applications such as chat, multiplayer games, collaboration tools, push notifications, and more. This library offers both server and client-side solutions, providing a high-performance, low-latency, and reliable framework for all your real-time needs. Supports Node.js, JavaScript, and TypeScript.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "bin": {
+    "relaybox": "./src/cli/index.ts"
   },
   "keywords": [
     "realtime",
@@ -51,6 +50,20 @@
     "javascript",
     "typescript"
   ],
-  "author": "",
-  "license": "ISC"
+  "author": "RelayBox",
+  "license": "MIT",
+  "dependencies": {
+    "@inquirer/prompts": "^6.0.1",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "commander": "^12.1.0",
+    "pg": "^8.12.0",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.5",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.6.2"
+  }
 }
