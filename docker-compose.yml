@@ -47,7 +47,7 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD:-password}
       - REDIS_DATABASES=${REDIS_DATABASES:-1}
     ports:
-      - ${REDIS_EXTERNAL_PORT:-6379}:6379
+      - ${CACHE_EXTERNAL_PORT:-6379}:6379
     volumes:
       - cache_data:/root/redis
       - ./services/cache/conf:/usr/local/etc/redis
@@ -62,8 +62,8 @@ services:
   broker:
     image: rabbitmq:3-management-alpine
     ports:
-      - ${RABBIT_MQ_EXTERNAL_PORT:-5672}:5672
-      - ${RABBIT_MQ_EXTERNAL_MANAGEMENT_PORT:-15672}:15672
+      - ${BROKER_MQ_EXTERNAL_PORT:-5672}:5672
+      - ${BROKER_MQ_EXTERNAL_MANAGEMENT_PORT:-15672}:15672
     volumes:
       - broker_data:/var/lib/rabbitmq/
       - broker_log:/var/log/rabbitmq/
@@ -112,7 +112,6 @@ services:
       <<: *db-config
       AUTH_ENCRYPTION_KEY: ${AUTH_ENCRYPTION_KEY}
       AUTH_ENCRYPTION_SALT: ${AUTH_ENCRYPTION_SALT}
-      AUTH_HASH_ID_SECRET: ${AUTH_HASH_ID_SECRET}
       AUTH_HMAC_KEY: ${AUTH_HMAC_KEY}
       AUTH_SERVICE_URL: ${AUTH_SERVICE_URL:-http://localhost:${PROXY_PORT:-9090}/auth/dev}
       JWT_ISSUER: ${JWT_ISSUER:-https://relaybox.net}

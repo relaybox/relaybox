@@ -1,3 +1,5 @@
-# Welcome to relaybox
+# RelayBox | Kickstart realtime web and mobile applications
 
-Please find the official relaybox packages [@relaybox](https://www.npmjs.com/org/relaybox)
+RelayBox is a high-perfomance, developer-focused platform designed to accelerate realtime web and mobile app development. Get your free API key today to power up your applications and services.
+
+## Getting Started
