@@ -12,7 +12,8 @@
   "license": "MIT",
   "files": [
     "dist/**/*",
-    "docker-compose.yml"
+    "docker-compose.yml",
+    ".env.template"
   ],
   "dependencies": {
     "@inquirer/prompts": "^6.0.1",

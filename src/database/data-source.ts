@@ -27,22 +27,14 @@ import { ApplicationAuthenticationProviders } from './entities/application_authe
 import { ApplicationAuthenticationPreferences } from './entities/application_authentication_preferences';
 import { AuthenticationActivityLog } from './entities/authentication_activity_logs';
 
-const DB_SYNC = process.env.DB_SYNC === 'true';
-const DB_TLS_DISABLED = process.env.DB_TLS_DISABLED === 'true';
-
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
-  port: Number(process.env.DB_EXTERNAL_PORT || 5432),
+  port: Number(process.env.DB_PORT || 5432),
   username: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'password',
   database: process.env.DB_NAME || 'relaybox_core_platform',
-  ...(!DB_TLS_DISABLED && {
-    ssl: {
-      rejectUnauthorized: false
-    }
-  }),
-  synchronize: DB_SYNC,
+  synchronize: true,
   logging: false,
   entities: [
     Organisation,

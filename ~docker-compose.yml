@@ -3,9 +3,9 @@ version: '3.8'
 
 x-db-config: &db-config
   DB_HOST: db
-  DB_NAME: &db-name ${DB_NAME:-relaybox_core_platform}
-  DB_USER: &db-user ${DB_USER:-postgres}
-  DB_PASSWORD: &db-password ${DB_PASSWORD:-password}
+  DB_NAME: ${DB_NAME:-relaybox_core_platform}
+  DB_USER: ${DB_USER:-postgres}
+  DB_PASSWORD: ${DB_PASSWORD:-password}
   DB_PORT: 5432 # external port mapping can be adjusted via .env DB_PORT
   DB_TLS_DISABLED: ${DB_TLS_DISABLED:-true}
   DB_PROXY_ENABLED: ${DB_PROXY_ENABLED:-false}
@@ -26,9 +26,9 @@ services:
   db:
     image: postgres:15-alpine
     environment:
-      POSTGRES_DB: *db-name
-      POSTGRES_USER: *db-user
-      POSTGRES_PASSWORD: *db-password
+      POSTGRES_DB: ${DB_NAME:-relaybox_core_platform}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
     ports:
       - ${DB_PORT:-5432}:5432
     volumes:
@@ -111,13 +111,12 @@ services:
     environment:
       <<: *db-config
       AUTH_SERVICE_URL: ${AUTH_SERVICE_URL:-http://localhost:${PROXY_PORT:-9090}/auth/dev}
-      AUTO_VERIFY: ${AUTO_VERIFY:-true}
       JWT_ISSUER: ${JWT_ISSUER:-https://relaybox.net}
       LOG_LEVEL: ${LOG_LEVEL:-debug}
-      SMTP_HOST: ${SMTP_HOST:-''}
-      SMTP_USERNAME: ${SMTP_USERNAME:-''}
-      SMTP_PASSWORD: ${SMTP_PASSWORD:-''}
-      SMTP_AUTH_EMAIL: ${SMTP_AUTH_EMAIL:-''}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_USERNAME: ${SMTP_USERNAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_AUTH_EMAIL: ${SMTP_AUTH_EMAIL}
     networks:
       - platform_network
 
