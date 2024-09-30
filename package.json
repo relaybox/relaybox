@@ -5,6 +5,23 @@
   "bin": {
     "relaybox": "./dist/cli/index.js"
   },
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "RelayBox",
+  "license": "MIT",
+  "dependencies": {
+    "@inquirer/prompts": "^6.0.1",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "commander": "^12.1.0",
+    "pg": "^8.12.0",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.5",
+    "typescript": "^5.6.2"
+  },
   "keywords": [
     "realtime",
     "real-time",
@@ -49,25 +66,5 @@
     "nodejs",
     "javascript",
     "typescript"
-  ],
-  "author": "RelayBox",
-  "license": "MIT",
-  "dependencies": {
-    "@inquirer/prompts": "^6.0.1",
-    "@paralleldrive/cuid2": "^2.2.2",
-    "commander": "^12.1.0",
-    "pg": "^8.12.0",
-    "reflect-metadata": "^0.2.2",
-    "typeorm": "^0.3.20"
-  },
-  "scripts": {
-    "build": "tsc",
-    "start": "node ./dist/cli/index.js"
-  },
-  "devDependencies": {
-    "@types/node": "^22.5.5",
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.6.2"
-  }
+  ]
 }
