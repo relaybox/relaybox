@@ -5,6 +5,7 @@ import { Command } from 'commander';
 import {
   createApplication,
   deregisterOauthProvider,
+  getResetPasswordverificationCode,
   readApplicationData,
   registerOauthProvider,
   setupDatabase,
@@ -94,6 +95,10 @@ program
     switch (action) {
       case 'verify':
         await verifyAuthUser();
+        break;
+
+      case 'reset-password':
+        await getResetPasswordverificationCode();
         break;
 
       default:
