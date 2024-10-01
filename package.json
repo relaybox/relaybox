@@ -1,6 +1,6 @@
 {
   "name": "relaybox",
-  "version": "1.0.0",
+  "version": "1.0.0-beta",
   "description": "A robust and scalable real-time infrastructure service with comprehensive WebSocket support, designed to facilitate live updates, event-driven communication, and seamless data streaming. Ideal for building real-time applications such as chat, multiplayer games, collaboration tools, push notifications, and more. This library offers both server and client-side solutions, providing a high-performance, low-latency, and reliable framework for all your real-time needs. Supports Node.js, JavaScript, and TypeScript.",
   "bin": {
     "relaybox": "./dist/cli.min.js"

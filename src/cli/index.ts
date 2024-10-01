@@ -13,6 +13,7 @@ import {
 } from './actions';
 import { execSync } from 'child_process';
 import { createGlobalConfig, createProcessEnv } from './config';
+import path from 'path';
 
 const program = new Command();
 
@@ -20,6 +21,8 @@ program
   .command('platform <action>')
   .description('Manage the platform')
   .action(async (action) => {
+    process.chdir(path.join(__dirname, '..'));
+
     switch (action) {
       case 'up':
         console.log('Starting platform...');
