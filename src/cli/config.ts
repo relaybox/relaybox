@@ -65,7 +65,7 @@ export function createProcessEnv() {
   let config: Config = {};
 
   const configFilePath = getConfigFilePath();
-  const envFilePath = path.join(__dirname, '..', '..', '.env');
+  const envFilePath = path.join(__dirname, '..', '.env');
 
   if (fs.existsSync(configFilePath)) {
     config = loadGlobalConfig();

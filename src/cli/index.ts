@@ -56,6 +56,8 @@ program
   .command('application <action>')
   .description('Create an application')
   .action((action) => {
+    process.chdir(path.join(__dirname, '..'));
+
     switch (action) {
       case 'create':
         createApplication();
@@ -74,6 +76,8 @@ program
   .command('oauth <action>')
   .description('Register an OAuth provider')
   .action(async (action) => {
+    process.chdir(path.join(__dirname, '..'));
+
     switch (action) {
       case 'create':
         await registerOauthProvider();
@@ -92,6 +96,8 @@ program
   .command('auth <action>')
   .description('Manage authentication actions')
   .action(async (action) => {
+    process.chdir(path.join(__dirname, '..'));
+
     switch (action) {
       case 'verify':
         await verifyAuthUser();
