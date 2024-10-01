@@ -4,9 +4,9 @@ version: '3.8'
 x-db-config: &db-config
   DB_HOST: db
   DB_NAME: &db-name ${DB_NAME:-relaybox_core_platform}
-  DB_USER: &db-user ${DB_USER:-postgres}
+  DB_USER: &db-user ${DB_USER:-relaybox_user}
   DB_PASSWORD: &db-password ${DB_PASSWORD:-password}
-  DB_PORT: 5432 # external port mapping can be adjusted via .env DB_PORT
+  DB_PORT: 5432
   DB_TLS_DISABLED: ${DB_TLS_DISABLED:-true}
   DB_PROXY_ENABLED: ${DB_PROXY_ENABLED:-false}
   DB_MAX_CONNECTIONS: ${DB_MAX_CONNECTIONS:-30}
@@ -14,15 +14,26 @@ x-db-config: &db-config
 
 x-redis-config: &redis-config
   REDIS_HOST: cache
-  REDIS_PORT: 6379 # external port mapping can be adjusted via .env CACHE_PORT
+  REDIS_PORT: 6379
   REDIS_TLS_DISABLED: ${REDIS_TLS_DISABLED:-true}
 
 x-rabbitmq-config: &rabbitmq-config
-  RABBIT_MQ_CONNECTION_STRING: amqp://guest:guest@broker:5672 # external port mapping can be adjusted via .env BROKER_PORT
+  RABBIT_MQ_CONNECTION_STRING: amqp://guest:guest@broker:5672
   RABBIT_MQ_QUEUE_AUTO_DELETE: true
   RABBIT_MQ_QUEUE_COUNT: 20
 
 services:
+  proxy:
+    image: nginx:latest
+    depends_on:
+      - uws
+    ports:
+      - ${PROXY_PORT:-9000}:8080
+    volumes:
+      - ./services/proxy/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - platform_network
+
   db:
     image: postgres:15-alpine
     environment:
@@ -30,7 +41,7 @@ services:
       POSTGRES_USER: *db-user
       POSTGRES_PASSWORD: *db-password
     ports:
-      - ${DB_PORT:-5432}:5432
+      - ${DB_PORT:-9001}:5432
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
@@ -46,8 +57,6 @@ services:
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD:-password}
       - REDIS_DATABASES=${REDIS_DATABASES:-1}
-    ports:
-      - ${CACHE_PORT:-6379}:6379
     volumes:
       - cache_data:/root/redis
       - ./services/cache/conf:/usr/local/etc/redis
@@ -61,9 +70,6 @@ services:
 
   broker:
     image: rabbitmq:3-management-alpine
-    ports:
-      - ${BROKER_PORT:-5672}:5672
-      - ${BROKER_MANAGEMENT_PORT:-15672}:15672
     volumes:
       - broker_data:/var/lib/rabbitmq/
       - broker_log:/var/log/rabbitmq/
@@ -74,17 +80,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-
-  proxy:
-    image: nginx:latest
-    depends_on:
-      - uws
-    ports:
-      - ${PROXY_PORT:-9090}:8080
-    volumes:
-      - ./services/proxy/nginx.conf:/etc/nginx/nginx.conf
-    networks:
-      - platform_network
 
   uws:
     image: relaybox/uws:2.5.1
@@ -110,7 +105,7 @@ services:
         condition: service_healthy
     environment:
       <<: *db-config
-      AUTH_SERVICE_URL: ${AUTH_SERVICE_URL:-http://localhost:${PROXY_PORT:-9090}/auth/dev}
+      AUTH_SERVICE_URL: ${AUTH_SERVICE_URL:-http://localhost:${PROXY_PORT:-9000}/auth/dev}
       AUTO_VERIFY: ${AUTO_VERIFY:-true}
       JWT_ISSUER: ${JWT_ISSUER:-https://relaybox.net}
       LOG_LEVEL: ${LOG_LEVEL:-debug}

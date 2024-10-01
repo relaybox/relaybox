@@ -12,6 +12,7 @@ import {
   verifyAuthUser
 } from './actions';
 import { execSync } from 'child_process';
+import { createGlobalConfig, createProcessEnv } from './config';
 
 const program = new Command();
 
@@ -22,9 +23,11 @@ program
     switch (action) {
       case 'up':
         console.log('Starting platform...');
+        createGlobalConfig();
+        const { proxyPort } = createProcessEnv();
         execSync('./shell/platform-up.sh', { stdio: 'inherit' });
         await setupDatabase();
-        console.log('Platform started successfully.');
+        console.log(`Platform running at http://localhost:${proxyPort}`);
         break;
 
       case 'sync':

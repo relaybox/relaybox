@@ -14,7 +14,7 @@ import { CREDENTIAL_PERMISSIONS, DEFAULT_OAUTH_PROVIDERS, DEFAULT_ORG_NAME } fro
 import { AuthenticationUser } from '../database/entities/authentication_users';
 import { getApplicationCredentials } from './lib';
 
-const PROXY_PORT = process.env.PROXY_PORT || '9090';
+const PROXY_PORT = process.env.PROXY_PORT || '9000';
 
 export async function setupDatabase() {
   await db.initialize({ synchronize: true });

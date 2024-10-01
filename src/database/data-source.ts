@@ -30,8 +30,8 @@ import { AuthenticationActivityLog } from './entities/authentication_activity_lo
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
-  port: Number(process.env.DB_PORT || 5432),
-  username: process.env.DB_USER || 'postgres',
+  port: Number(process.env.DB_PORT || 9001),
+  username: process.env.DB_USER || 'relaybox_user',
   password: process.env.DB_PASSWORD || 'password',
   database: process.env.DB_NAME || 'relaybox_core_platform',
   synchronize: true,

@@ -4,7 +4,7 @@ echo "Starting services..."
 
 docker-compose up -d
 
-DB_CONTAINER_NAME=$(docker-compose ps -q db)
+DB_CONTAINER_NAME=$(docker-compose --env-file .env.tmp ps -q db)
 
 echo "Waiting for Postgres..."
 while ! docker exec $DB_CONTAINER_NAME pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}; do
