@@ -99,7 +99,7 @@ services:
       - platform_network
 
   auth:
-    image: relaybox/auth:3.7.1
+    image: relaybox/auth:3.7.2
     depends_on:
       db:
         condition: service_healthy
