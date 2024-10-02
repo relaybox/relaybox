@@ -82,7 +82,7 @@ services:
       retries: 5
 
   uws:
-    image: relaybox/uws:2.5.1
+    image: relaybox/uws:2.5.2
     depends_on:
       cache:
         condition: service_healthy
