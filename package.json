@@ -8,7 +8,15 @@
   "scripts": {
     "build": "node build.config.js"
   },
-  "author": "RelayBox",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/relaybox/relaybox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/relaybox/relaybox/issues"
+  },
+  "homepage": "https://relaybox.net",
+  "author": "support@relaybox.net",
   "license": "MIT",
   "files": [
     "dist/**/*",
