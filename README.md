@@ -1,18 +1,18 @@
 # <a href="https://relaybox.net" target="blank">RelayBox</a> | Kickstart realtime web and mobile applications
 
-RelayBox is a high-perfomance, developer-focused platform designed to accelerate realtime web and mobile app development. Get your free API key today to power up your applications and services.
+RelayBox is a high-perfomance, developer-focused platform designed to accelerate realtime web and mobile app development. Get your <a href="https://relaybox.net">free API key</a> today to power up your applications and services.
 
 View the <a href="https://relaybox.net/docs/api-reference/relaybox" target="blank">full technical documentation</a>.
 
 The purpose of this library is to install the RelayBox CLI, which is designed to orchestrate the offline platform emulator.
 
-With this emulator, you can replicate the full <a href="https://relaybox.net" target="blank">RelayBox</a> environment locally, allowing you to test and develop your applications without needing access to the live platform. It simplifies the process by managing the setup and coordination of all necessary services, so you can focus on building and refining your app with confidence.
+Use this CLI to replicate the full <a href="https://relaybox.net" target="blank">RelayBox</a> environment locally, allowing you to test and develop your applications without needing access to the live platform. It simplifies the process by managing the setup and coordination of all necessary services, so you can focus on building and refining your app with confidence.
 
 <h2 id="install-relaybox">Installation</h2>
 
 The `relaybox` package is distributed via npm and can be installed using the following command:
 
-```
+```bash
 npm install -g relaybox
 ```
 
@@ -81,13 +81,13 @@ relaybox platform down
 
 <h2 id="relaybox-application-create">application create</h2>
 
-Creates an application and provides a `publicKey` and `apiKey` for use with the <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client">client</a> and <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-rest">rest</a> sdk libraries.
+Creates an application and provides a `publicKey` and `apiKey`.
 
 ```bash
 relaybox application create
 ```
 
-A prompt will appear asking you to choose a name for your application. Once you've created an application, you will be provided with a `publicKey` and `apiKey` for use with the <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client">client</a> and <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-rest">rest</a> sdk libraries.
+A prompt will appear asking you to choose a name for your application. Once you've created an application, you will be provided with a `publicKey` and `apiKey` for use with the <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client">client</a> and <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-rest">rest</a> SDK libraries.
 
 **Output:**
 
@@ -128,3 +128,5 @@ Outputs a 6 digit verification code following a password reset request via <a ta
 ```bash
 relaybox auth reset-password
 ```
+
+Use this in place of handling password verification over email if you aren't conecting an SMTP client to you =r local environment.
