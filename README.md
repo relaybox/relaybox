@@ -2,6 +2,8 @@
 
 RelayBox is a high-perfomance, developer-focused platform designed to accelerate realtime web and mobile app development. Get your free API key today to power up your applications and services.
 
+View the <a href="https://relaybox.net/docs" target="_blank">full technical documentation</a>.
+
 The purpose of this library is to install the RelayBox CLI, which is designed to orchestrate the offline platform emulator.
 
 With this emulator, you can replicate the full RelayBox environment locally, allowing you to test and develop your applications without needing access to the live platform. It simplifies the process by managing the setup and coordination of all necessary services, so you can focus on building and refining your app with confidence.
