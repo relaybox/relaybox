@@ -1,0 +1,69 @@
+name: Publish npm package
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  dry-run:
+    name: Build / Dry Run
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run build
+        run: npm run build
+
+      - name: Dry Run
+        run: npm pack --dry-run
+
+  publish:
+    name: Publish NPM
+    runs-on: ubuntu-latest
+    needs: dry-run
+    environment:
+      name: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Extract Version from Tag
+        id: extract-version
+        uses: ./.github/actions/extract-version
+
+      - name: Update package version
+        run: |
+          npm version ${{ steps.extract-version.outputs.version }} --no-git-tag-version
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run build
+        run: npm run build
+
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: update package version [skip ci]'
+          commit_author: GitHub Actions <actions@github.com>
+          branch: main
