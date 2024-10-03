@@ -20,7 +20,7 @@ Once the library has been successfully installed, the following API reference ap
 
 <h2 id="connecting-to-the-platform">Connecting to the platform</h2>
 
-The offline platform emulator is intended for use alongside <a href="https://relaybox.net/docs/api-reference/relaybox-client">RelayBox Client</a> and <a href="https://relaybox.net/docs/api-reference/relaybox-rest">RelayBox REST</a> SDKs. To connect to the offline platform, simply initialize a new instance of the RelayBox class, setting the `offline` options as follows.
+The offline platform emulator is intended for use alongside <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client">RelayBox Client</a> and <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-rest">RelayBox REST</a> SDKs. To connect to the offline platform, simply initialize a new instance of the RelayBox class, setting the `offline` options as follows.
 
 ```
 const relayBox = new RelayBox({
@@ -34,7 +34,7 @@ const relayBox = new RelayBox({
 
 ---
 
-<h2 id="relaybox-platform-configure">`platform configure`</h2>
+<h2 id="relaybox-platform-configure">platform configure</h2>
 
 Provides options for configuring application and db ports alongside logging levels. By default, the exposed platform services will run on the following ports:
 
@@ -53,7 +53,7 @@ Follow the prompts to configure your platform.
 
 ---
 
-<h2 id="relaybox-platform-up">`platform up`</h2>
+<h2 id="relaybox-platform-up">platform up</h2>
 
 Responsible for pulling Docker container images and bootstrapping the database in preparation to connect and run applications.
 
@@ -65,7 +65,7 @@ Running `relaybox platform up` will start the offline platform emulator.
 
 ---
 
-<h2 id="relaybox-platform-down">`platform down`</h2>
+<h2 id="relaybox-platform-down">platform down</h2>
 
 Responsible for stopping any running Docker containers.
 
@@ -75,15 +75,15 @@ relaybox platform down
 
 ---
 
-<h2 id="relaybox-application-create">`application create`</h2>
+<h2 id="relaybox-application-create">application create</h2>
 
-Creates an application and provides a `publicKey` and `apiKey` for use with the <a href="https://relaybox.net/docs/api-reference/relaybox-client">client</a> and <a href="https://relaybox.net/docs/api-reference/relaybox-rest">rest</a> sdk libraries.
+Creates an application and provides a `publicKey` and `apiKey` for use with the <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client">client</a> and <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-rest">rest</a> sdk libraries.
 
 ```
 relaybox application create
 ```
 
-A prompt will appear asking you to choose a name for your application. Once you've created an application, you will be provided with a `publicKey` and `apiKey` for use with the <a href="https://relaybox.net/docs/api-reference/relaybox-client">client</a> and <a href="https://relaybox.net/docs/api-reference/relaybox-rest">rest</a> sdk libraries.
+A prompt will appear asking you to choose a name for your application. Once you've created an application, you will be provided with a `publicKey` and `apiKey` for use with the <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client">client</a> and <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-rest">rest</a> sdk libraries.
 
 **Output:**
 
@@ -97,9 +97,9 @@ A prompt will appear asking you to choose a name for your application. Once you'
 
 ---
 
-<h2 id="relaybox-oauth-enable">`oauth enable`</h2>
+<h2 id="relaybox-oauth-enable">oauth enable</h2>
 
-Enable an oauth provider for use with the <a href="https://relaybox.net/docs/api-reference/relaybox-client/auth#auth-signin-with-oauth">live auth</a> service.
+Enable an oauth provider for use with the <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client/auth#auth-signin-with-oauth">live auth</a> service.
 
 ```
 relaybox oauth enable
@@ -107,9 +107,9 @@ relaybox oauth enable
 
 ---
 
-<h2 id="relaybox-oauth-disable">`oauth disable`</h2>
+<h2 id="relaybox-oauth-disable">oauth disable</h2>
 
-Disable an oauth provider for use with the <a href="https://relaybox.net/docs/api-reference/relaybox-client/auth#auth-signin-with-oauth">live auth</a> service.
+Disable an oauth provider for use with the <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client/auth#auth-signin-with-oauth">live auth</a> service.
 
 ```
 relaybox oauth disable
@@ -117,9 +117,9 @@ relaybox oauth disable
 
 ---
 
-<h2 id="relaybox-auth-reset-password">`auth reset-password`</h2>
+<h2 id="relaybox-auth-reset-password">auth reset-password</h2>
 
-Outputs a 6 digit verification code following a password reset request via <a href="https://relaybox.net/docs/api-reference/relaybox-client/auth#auth-password-reset">live auth</a>
+Outputs a 6 digit verification code following a password reset request via <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client/auth#auth-password-reset">live auth</a>
 
 ```
 relaybox auth reset-password
