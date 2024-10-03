@@ -34,7 +34,7 @@
     "realtime",
     "real-time",
     "websockets",
-    "websocket",
+    "nodejs realtime",
     "ws",
     "pubsub",
     "publish-subscribe",
@@ -73,6 +73,9 @@
     "protocol",
     "nodejs",
     "javascript",
-    "typescript"
+    "typescript",
+    "open source pusher",
+    "realtim offline emulator",
+    "high performance websocket"
   ]
 }
