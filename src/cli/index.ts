@@ -13,9 +13,10 @@ import {
   verifyAuthUser
 } from './actions';
 import { execSync } from 'child_process';
-import { createGlobalConfig, createProcessEnv } from './config';
+import { configurePlatformConfig, createGlobalConfig, createProcessEnv } from './config';
 import path from 'path';
 import { promisify } from 'util';
+import { create } from 'domain';
 
 const sleep = promisify(setTimeout);
 
@@ -48,6 +49,11 @@ program
         console.log('Stopping platform...');
         execSync('docker-compose down', { stdio: 'inherit' });
         console.log('Platform stopped successfully.');
+        break;
+
+      case 'configure':
+        const configOpts = await configurePlatformConfig();
+        createGlobalConfig(configOpts);
         break;
 
       default:

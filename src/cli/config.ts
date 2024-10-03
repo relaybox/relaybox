@@ -1,6 +1,7 @@
 import os from 'os';
 import path from 'path';
 import fs from 'fs';
+import { input, select } from '@inquirer/prompts';
 
 const DEFAULT_PROXY_PORT = 9000;
 const DEFAULT_DB_PORT = 9001;
@@ -18,6 +19,12 @@ interface Config {
   };
 }
 
+interface ConfigOpts {
+  proxyPort: number;
+  dbPort: number;
+  logLevel: string;
+}
+
 function getConfigFilePath() {
   const homeDir = os.homedir();
   const configFilePath = `${homeDir}/.relaybox/config.json`;
@@ -25,19 +32,19 @@ function getConfigFilePath() {
   return configFilePath;
 }
 
-export async function createGlobalConfig() {
+export async function createGlobalConfig(configOpts?: ConfigOpts) {
   const configFilePath = getConfigFilePath();
 
-  if (!fs.existsSync(configFilePath)) {
+  if (!fs.existsSync(configFilePath) || configOpts) {
     const config = {
       proxy: {
-        port: DEFAULT_PROXY_PORT
+        port: configOpts?.proxyPort || DEFAULT_PROXY_PORT
       },
       db: {
-        port: DEFAULT_DB_PORT
+        port: configOpts?.dbPort || DEFAULT_DB_PORT
       },
       log: {
-        level: DEFAULT_LOG_LEVEL
+        level: configOpts?.logLevel || DEFAULT_LOG_LEVEL
       }
     };
 
@@ -61,7 +68,7 @@ export function loadGlobalConfig() {
   return {};
 }
 
-export function createProcessEnv() {
+export function createProcessEnv(): ConfigOpts {
   let config: Config = {};
 
   const configFilePath = getConfigFilePath();
@@ -85,5 +92,29 @@ LOG_LEVEL=${logLevel}`;
     proxyPort,
     dbPort,
     logLevel
+  };
+}
+
+export async function configurePlatformConfig(): Promise<ConfigOpts> {
+  const proxyPort = await input({
+    message: 'Choose application proxy port:',
+    default: `${DEFAULT_PROXY_PORT}`
+  });
+
+  const dbPort = await input({
+    message: 'Choose database port:',
+    default: `${DEFAULT_DB_PORT}`
+  });
+
+  const logLevel = await select({
+    message: 'Choose log level:',
+    choices: ['debug', 'info', 'warn', 'error'],
+    default: DEFAULT_LOG_LEVEL
+  });
+
+  return {
+    proxyPort: Number(proxyPort),
+    dbPort: Number(dbPort),
+    logLevel: `${logLevel}`
   };
 }
