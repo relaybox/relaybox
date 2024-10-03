@@ -15,6 +15,9 @@ import {
 import { execSync } from 'child_process';
 import { createGlobalConfig, createProcessEnv } from './config';
 import path from 'path';
+import { promisify } from 'util';
+
+const sleep = promisify(setTimeout);
 
 const program = new Command();
 
@@ -79,11 +82,11 @@ program
     process.chdir(path.join(__dirname, '..'));
 
     switch (action) {
-      case 'create':
+      case 'enable':
         await registerOauthProvider();
         break;
 
-      case 'delete':
+      case 'disable':
         await deregisterOauthProvider();
         break;
 

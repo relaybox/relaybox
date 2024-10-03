@@ -220,6 +220,11 @@ export async function deregisterOauthProvider() {
       .select(['aap.id', 'ap.friendlyName'])
       .getRawMany();
 
+    if (!providers.length) {
+      console.log('No OAuth providers enabled');
+      return;
+    }
+
     const providerId = await select({
       message: 'Choose an OAuth provider',
       choices: providers.map((provider) => ({
