@@ -24,14 +24,14 @@ Once the library has been successfully installed, the following API reference ap
 
 The offline platform emulator is intended for use alongside <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client">RelayBox Client</a> and <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-rest">RelayBox REST</a> SDKs. To connect to the offline platform, simply initialize a new instance of the RelayBox class, setting the `offline` options as follows.
 
-```
+```typescript
 import { RelayBox } from '@relaybox/client';
 
 const relayBox = new RelayBox({
   publicKey: 'Your public key',
   offline: {
     enabled: true, // Required
-    port: 3000, // Optional port override based on config settings
+    port: 3000 // Optional port override based on config settings
   }
 });
 ```
@@ -47,7 +47,7 @@ Provides options for configuring application and db ports alongside logging leve
 
 Using a logging level of `debug` which will output all logs without any filtering. To customize these settings, simply run:
 
-```
+```bash
 relaybox platform configure
 ```
 
@@ -61,7 +61,7 @@ Follow the prompts to configure your platform.
 
 Responsible for pulling Docker container images and bootstrapping the database in preparation to connect and run applications.
 
-```
+```bash
 relaybox platform up
 ```
 
@@ -73,7 +73,7 @@ Running `relaybox platform up` will start the offline platform emulator.
 
 Responsible for stopping any running Docker containers.
 
-```
+```bash
 relaybox platform down
 ```
 
@@ -83,7 +83,7 @@ relaybox platform down
 
 Creates an application and provides a `publicKey` and `apiKey` for use with the <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client">client</a> and <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-rest">rest</a> sdk libraries.
 
-```
+```bash
 relaybox application create
 ```
 
@@ -91,7 +91,7 @@ A prompt will appear asking you to choose a name for your application. Once you'
 
 **Output:**
 
-```
+```json
 {
   "id": "gyyeqecxuhuz",
   "publicKey": "gyyeqecxuhuz.wotylbxdurq5",
@@ -105,7 +105,7 @@ A prompt will appear asking you to choose a name for your application. Once you'
 
 Enable an oauth provider for use with the <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client/auth#auth-signin-with-oauth">live auth</a> service.
 
-```
+```bash
 relaybox oauth enable
 ```
 
@@ -115,7 +115,7 @@ relaybox oauth enable
 
 Disable an oauth provider for use with the <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client/auth#auth-signin-with-oauth">live auth</a> service.
 
-```
+```bash
 relaybox oauth disable
 ```
 
@@ -125,6 +125,6 @@ relaybox oauth disable
 
 Outputs a 6 digit verification code following a password reset request via <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client/auth#auth-password-reset">live auth</a>
 
-```
+```bash
 relaybox auth reset-password
 ```
