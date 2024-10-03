@@ -6,7 +6,7 @@ View the <a href="https://relaybox.net/docs/api-reference/relaybox" target="blan
 
 The purpose of this library is to install the RelayBox CLI, which is designed to orchestrate the offline platform emulator.
 
-With this emulator, you can replicate the full RelayBox environment locally, allowing you to test and develop your applications without needing access to the live platform. It simplifies the process by managing the setup and coordination of all necessary services, so you can focus on building and refining your app with confidence.
+With this emulator, you can replicate the full <a href="https://relaybox.net" target="blank">RelayBox</a> environment locally, allowing you to test and develop your applications without needing access to the live platform. It simplifies the process by managing the setup and coordination of all necessary services, so you can focus on building and refining your app with confidence.
 
 <h2 id="install-relaybox">Installation</h2>
 
@@ -25,6 +25,8 @@ Once the library has been successfully installed, the following API reference ap
 The offline platform emulator is intended for use alongside <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client">RelayBox Client</a> and <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-rest">RelayBox REST</a> SDKs. To connect to the offline platform, simply initialize a new instance of the RelayBox class, setting the `offline` options as follows.
 
 ```
+import { RelayBox } from '@relaybox/client';
+
 const relayBox = new RelayBox({
   publicKey: 'Your public key',
   offline: {
