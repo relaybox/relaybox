@@ -99,12 +99,13 @@ services:
       - platform_network
 
   auth:
-    image: relaybox/auth:3.7.2
+    image: relaybox/auth:3.8.2
     depends_on:
       db:
         condition: service_healthy
     environment:
       <<: *db-config
+      EMULATOR: true
       AUTH_SERVICE_URL: ${AUTH_SERVICE_URL:-http://localhost:${PROXY_PORT:-9000}/auth/dev}
       AUTO_VERIFY: ${AUTO_VERIFY:-true}
       JWT_ISSUER: ${JWT_ISSUER:-https://relaybox.net}
