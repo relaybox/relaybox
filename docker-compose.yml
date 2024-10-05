@@ -82,7 +82,7 @@ services:
       retries: 5
 
   uws:
-    image: relaybox/uws:2.5.2
+    image: relaybox/uws:2.6.0
     depends_on:
       cache:
         condition: service_healthy
@@ -118,7 +118,7 @@ services:
       - platform_network
 
   session:
-    image: relaybox/session:2.7.0
+    image: relaybox/session:2.8.0
     depends_on:
       cache:
         condition: service_healthy
@@ -135,7 +135,7 @@ services:
       - platform_network
 
   presence:
-    image: relaybox/presence:2.3.0
+    image: relaybox/presence:2.4.0
     depends_on:
       cache:
         condition: service_healthy
@@ -150,7 +150,7 @@ services:
       - platform_network
 
   metrics:
-    image: relaybox/metrics:2.1.0
+    image: relaybox/metrics:2.2.0
     depends_on:
       cache:
         condition: service_healthy
@@ -165,7 +165,7 @@ services:
       - platform_network
 
   history:
-    image: relaybox/history:2.1.0
+    image: relaybox/history:2.2.0
     depends_on:
       cache:
         condition: service_healthy
