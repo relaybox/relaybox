@@ -26,7 +26,7 @@ services:
   proxy:
     image: nginx:latest
     depends_on:
-      - uws
+      - core
     ports:
       - ${PROXY_PORT:-9000}:8080
     volumes:
@@ -81,8 +81,8 @@ services:
       timeout: 10s
       retries: 5
 
-  uws:
-    image: relaybox/uws:2.6.0
+  core:
+    image: relaybox/core:2.6.2
     depends_on:
       cache:
         condition: service_healthy
@@ -99,7 +99,7 @@ services:
       - platform_network
 
   auth:
-    image: relaybox/auth:3.8.2
+    image: relaybox/auth:3.9.0
     depends_on:
       db:
         condition: service_healthy
