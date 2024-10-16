@@ -2,21 +2,14 @@
 
 import 'reflect-metadata';
 import { Command } from 'commander';
-import {
-  createApplication,
-  createWebhook,
-  deregisterOauthProvider,
-  getResetPasswordverificationCode,
-  readApplicationData,
-  registerOauthProvider,
-  setupDatabase,
-  syncDatabase,
-  verifyAuthUser
-} from './actions';
 import { execSync } from 'child_process';
 import { configurePlatformConfig, createGlobalConfig, createProcessEnv } from './config';
 import path from 'path';
-import { promisify } from 'util';
+import { setupDatabase, syncDatabase } from './actions/platform';
+import { createApplication, readApplicationData } from './actions/application';
+import { deregisterOauthProvider, registerOauthProvider } from './actions/oauth';
+import { getResetPasswordverificationCode, verifyAuthUser } from './actions/auth';
+import { createWebhook } from './actions/webhook';
 
 const program = new Command();
 
