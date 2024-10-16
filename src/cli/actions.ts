@@ -1,6 +1,6 @@
 import * as db from './db';
 import { AppDataSource } from '../database/data-source';
-import { confirm, input, password, select } from '@inquirer/prompts';
+import { confirm, input, password, select, checkbox } from '@inquirer/prompts';
 import { createId } from '@paralleldrive/cuid2';
 import { encrypt, generateHash, generateSalt, generateSecret } from '../lib/encryption';
 import { Application } from '../database/entities/applications';
@@ -19,6 +19,8 @@ import {
 import { AuthenticationUser } from '../database/entities/authentication_users';
 import { getApplicationCredentials } from './lib';
 import { WebhookEvents } from '../database/entities/webhook_events';
+import { ApplicationWebhooks } from '../database/entities/application_webhooks';
+import { ApplicationWebhookEvents } from '../database/entities/application_webhook_events';
 
 const PROXY_PORT = process.env.PROXY_PORT;
 
@@ -30,13 +32,7 @@ export async function setupDatabase() {
   await queryRunner.startTransaction();
 
   try {
-    const organisationRepository = queryRunner.manager.getRepository(Organisation);
-    const authenticationProvidersRepository =
-      queryRunner.manager.getRepository(AuthenticationProviders);
-    const webhookEventsRepository = queryRunner.manager.getRepository(WebhookEvents);
-
-    await organisationRepository
-      .createQueryBuilder()
+    await AppDataSource.createQueryBuilder()
       .insert()
       .into('organisations')
       .values({
@@ -46,8 +42,7 @@ export async function setupDatabase() {
       .orIgnore()
       .execute();
 
-    await authenticationProvidersRepository
-      .createQueryBuilder()
+    await AppDataSource.createQueryBuilder()
       .insert()
       .into('authentication_providers')
       .values(DEFAULT_OAUTH_PROVIDERS)
@@ -59,8 +54,7 @@ export async function setupDatabase() {
       createdAt: new Date().toISOString()
     }));
 
-    await webhookEventsRepository
-      .createQueryBuilder()
+    await AppDataSource.createQueryBuilder()
       .insert()
       .into('webhook_events')
       .values(webhookEvents)
@@ -100,10 +94,10 @@ export async function createApplication() {
     const organisationRepository = AppDataSource.getRepository(Organisation);
     const applicationRepository = AppDataSource.getRepository(Application);
     const credentialsRepository = AppDataSource.getRepository(Credential);
-    const applicationPreferencesRepository = AppDataSource.getRepository(
+    const credentialPermissionsRepository = AppDataSource.getRepository(CredentialPermission);
+    const appAuthPreferencesRepository = AppDataSource.getRepository(
       ApplicationAuthenticationPreferences
     );
-    const credentialPermissionsRepository = AppDataSource.getRepository(CredentialPermission);
 
     const organisation = await organisationRepository.findOneBy({
       name: DEFAULT_ORG_NAME
@@ -114,7 +108,9 @@ export async function createApplication() {
       return;
     }
 
-    const name = await input({ message: 'Choose and application name:' });
+    const name = await input({
+      message: 'Choose and application name:'
+    });
 
     const application = applicationRepository.create({
       name,
@@ -137,7 +133,7 @@ export async function createApplication() {
 
     await credentialsRepository.save(credentials);
 
-    const applicationPreference = applicationPreferencesRepository.create({
+    const appAuthPreferences = appAuthPreferencesRepository.create({
       appId: application.id,
       tokenExpiry: 3600,
       sessionExpiry: 3600,
@@ -145,7 +141,7 @@ export async function createApplication() {
       createdAt: new Date().toISOString()
     });
 
-    await applicationPreferencesRepository.save(applicationPreference);
+    await appAuthPreferencesRepository.save(appAuthPreferences);
 
     for (const permission of CREDENTIAL_PERMISSIONS) {
       const credentialPermission = credentialPermissionsRepository.create({
@@ -195,8 +191,14 @@ export async function registerOauthProvider() {
       }))
     });
 
-    const clientId = await input({ message: 'Enter OAuth clientID:' });
-    const clientSecret = await password({ message: 'Enter OAuth clientSecret:', mask: true });
+    const clientId = await input({
+      message: 'Enter OAuth clientID:'
+    });
+
+    const clientSecret = await password({
+      message: 'Enter OAuth clientSecret:',
+      mask: true
+    });
 
     const encryptionSalt = generateSalt();
     const encryptedClientSecret = encrypt(clientSecret, encryptionSalt);
@@ -271,7 +273,9 @@ export async function deregisterOauthProvider() {
       return;
     }
 
-    await appAuthProvidersRepository.delete({ id: providerId });
+    await appAuthProvidersRepository.delete({
+      id: providerId
+    });
 
     console.log('OAuth provider deleted successfully');
   } catch (err) {
@@ -363,7 +367,10 @@ export async function getResetPasswordverificationCode() {
 
     const authenticationUserRepository = AppDataSource.getRepository(AuthenticationUser);
 
-    const email = await input({ message: 'Enter email:' });
+    const email = await input({
+      message: 'Enter email:'
+    });
+
     const hashedEmail = generateHash(email);
     const now = new Date().toISOString();
 
@@ -395,5 +402,97 @@ export async function getResetPasswordverificationCode() {
     }
   } catch (err) {
     console.log('Error getting password reset code:', err);
+  }
+}
+
+export async function createWebhook() {
+  try {
+    await db.initialize();
+
+    const applicationRepository = AppDataSource.getRepository(Application);
+    const webhookEventsRepository = AppDataSource.getRepository(WebhookEvents);
+    const applicationWebhooksRepository = AppDataSource.getRepository(ApplicationWebhooks);
+    const applicationWebhookEventsRepository =
+      AppDataSource.getRepository(ApplicationWebhookEvents);
+
+    const applications = await applicationRepository.find();
+
+    if (!applications.length) {
+      console.log('No applications found');
+      return;
+    }
+
+    const appId = await select({
+      message: 'Choose an application',
+      choices: applications.map((app) => ({
+        name: app.name,
+        value: app.id
+      }))
+    });
+
+    const application = await applicationRepository.findOne({
+      where: {
+        id: appId
+      }
+    });
+
+    if (!application) {
+      console.log('Application not found, exiting...');
+      return;
+    }
+
+    const webhookName = await input({
+      message: 'Enter a name for the webhook:'
+    });
+
+    const webhookUrl = await input({
+      message: 'Enter a valid URL for the webhook:'
+    });
+
+    const webhookEvents = await webhookEventsRepository.find();
+
+    const events = await checkbox({
+      message: 'Choose events to attach:',
+      choices: webhookEvents.map((event) => ({
+        name: event.name,
+        value: event.id
+      }))
+    });
+
+    const applicationWebhook = applicationWebhooksRepository.create({
+      appId: application.id,
+      appPid: application.pid,
+      name: webhookName,
+      url: webhookUrl,
+      signingKey: generateSecret(),
+      createdAt: new Date().toISOString(),
+      enabled: true
+    });
+
+    await applicationWebhooksRepository.save(applicationWebhook);
+
+    const applicationWebhookEvents = events.map((eventId) => ({
+      appId: application.id,
+      appPid: application.pid,
+      webhookId: applicationWebhook.id,
+      webhookEventId: eventId,
+      createdAt: new Date().toISOString()
+    }));
+
+    await AppDataSource.createQueryBuilder()
+      .insert()
+      .into('application_webhook_events')
+      .values(applicationWebhookEvents)
+      .orIgnore()
+      .execute();
+
+    const { signingKey, url } = applicationWebhook;
+
+    console.log({
+      signingKey,
+      url
+    });
+  } catch (err: unknown) {
+    console.log('Error creating webhook:', err);
   }
 }

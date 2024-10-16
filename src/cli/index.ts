@@ -4,6 +4,7 @@ import 'reflect-metadata';
 import { Command } from 'commander';
 import {
   createApplication,
+  createWebhook,
   deregisterOauthProvider,
   getResetPasswordverificationCode,
   readApplicationData,
@@ -16,9 +17,6 @@ import { execSync } from 'child_process';
 import { configurePlatformConfig, createGlobalConfig, createProcessEnv } from './config';
 import path from 'path';
 import { promisify } from 'util';
-import { create } from 'domain';
-
-const sleep = promisify(setTimeout);
 
 const program = new Command();
 
@@ -116,6 +114,22 @@ program
 
       case 'reset-password':
         await getResetPasswordverificationCode();
+        break;
+
+      default:
+        console.error(`Unknown action: ${action}`);
+    }
+  });
+
+program
+  .command('webhook <action>')
+  .description('Manage webhook actions')
+  .action(async (action) => {
+    process.chdir(path.join(__dirname, '..'));
+
+    switch (action) {
+      case 'create':
+        await createWebhook();
         break;
 
       default:
