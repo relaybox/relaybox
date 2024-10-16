@@ -10,9 +10,15 @@ import { ApplicationAuthenticationPreferences } from '../database/entities/appli
 import { CredentialPermission } from '../database/entities/credential_permissions';
 import { AuthenticationProviders } from '../database/entities/authentication_providers';
 import { ApplicationAuthenticationProviders } from '../database/entities/application_authentication_providers';
-import { CREDENTIAL_PERMISSIONS, DEFAULT_OAUTH_PROVIDERS, DEFAULT_ORG_NAME } from './defaults';
+import {
+  CREDENTIAL_PERMISSIONS,
+  DEFAULT_OAUTH_PROVIDERS,
+  DEFAULT_ORG_NAME,
+  DEFAULT_WEBHOOK_EVENTS
+} from './defaults';
 import { AuthenticationUser } from '../database/entities/authentication_users';
 import { getApplicationCredentials } from './lib';
+import { WebhookEvents } from '../database/entities/webhook_events';
 
 const PROXY_PORT = process.env.PROXY_PORT;
 
@@ -27,26 +33,44 @@ export async function setupDatabase() {
     const organisationRepository = queryRunner.manager.getRepository(Organisation);
     const authenticationProvidersRepository =
       queryRunner.manager.getRepository(AuthenticationProviders);
+    const webhookEventsRepository = queryRunner.manager.getRepository(WebhookEvents);
 
-    const existingOrganisation = await organisationRepository.findOneBy({
-      name: DEFAULT_ORG_NAME
-    });
+    // const existingOrganisation = await organisationRepository.findOneBy({
+    //   name: DEFAULT_ORG_NAME
+    // });
 
-    if (existingOrganisation) {
-      await queryRunner.rollbackTransaction();
-      return;
-    }
+    // if (existingOrganisation) {
+    //   await queryRunner.rollbackTransaction();
+    //   return;
+    // }
 
-    const organisation = organisationRepository.create({
-      name: DEFAULT_ORG_NAME,
-      createdAt: new Date().toISOString()
-    });
+    // const organisation = organisationRepository.create({
+    //   name: DEFAULT_ORG_NAME,
+    //   createdAt: new Date().toISOString()
+    // });
 
-    await organisationRepository.save(organisation);
+    // await organisationRepository.save(organisation);
+
+    await organisationRepository
+      .createQueryBuilder()
+      .insert()
+      .into('organisations')
+      .values({
+        name: DEFAULT_ORG_NAME,
+        createdAt: new Date().toISOString()
+      })
+      .orIgnore()
+      .execute();
 
     for (const provider of DEFAULT_OAUTH_PROVIDERS) {
       const authenticationProvider = authenticationProvidersRepository.create(provider);
       await authenticationProvidersRepository.save(authenticationProvider);
+    }
+
+    for (const event of DEFAULT_WEBHOOK_EVENTS) {
+      event.createdAt = new Date().toISOString();
+      const webhookEvent = webhookEventsRepository.create(event);
+      await webhookEventsRepository.save(webhookEvent);
     }
 
     await queryRunner.commitTransaction();

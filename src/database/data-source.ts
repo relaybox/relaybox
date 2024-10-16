@@ -29,6 +29,10 @@ import { AuthenticationProviders } from './entities/authentication_providers';
 import { ApplicationAuthenticationProviders } from './entities/application_authentication_providers';
 import { ApplicationAuthenticationPreferences } from './entities/application_authentication_preferences';
 import { AuthenticationActivityLog } from './entities/authentication_activity_logs';
+import { ApplicationWebhooks } from './entities/application_webhooks';
+import { WebhookEvents } from './entities/webhook_events';
+import { ApplicationWebhookLogs } from './entities/application_webhook_logs';
+import { ApplicationWebhookEvents } from './entities/application_webhook_events';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -63,6 +67,10 @@ export const AppDataSource = new DataSource({
     AuthenticationProviders,
     ApplicationAuthenticationProviders,
     ApplicationAuthenticationPreferences,
-    AuthenticationActivityLog
+    AuthenticationActivityLog,
+    ApplicationWebhooks,
+    ApplicationWebhookLogs,
+    ApplicationWebhookEvents,
+    WebhookEvents
   ]
 });

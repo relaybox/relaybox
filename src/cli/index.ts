@@ -42,6 +42,7 @@ program
         console.log('Syncing platform...');
         execSync('./shell/platform-up.sh', { stdio: 'inherit' });
         await syncDatabase();
+        await setupDatabase();
         console.log('Platform synced successfully.');
         break;
 
