@@ -34,6 +34,7 @@ program
         createGlobalConfig();
         const { proxyPort } = createProcessEnv();
         execSync('./shell/platform-up.sh', { stdio: 'inherit' });
+        await syncDatabase();
         await setupDatabase();
         console.log(`Platform running at http://localhost:${proxyPort}`);
         break;

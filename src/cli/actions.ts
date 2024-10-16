@@ -35,22 +35,6 @@ export async function setupDatabase() {
       queryRunner.manager.getRepository(AuthenticationProviders);
     const webhookEventsRepository = queryRunner.manager.getRepository(WebhookEvents);
 
-    // const existingOrganisation = await organisationRepository.findOneBy({
-    //   name: DEFAULT_ORG_NAME
-    // });
-
-    // if (existingOrganisation) {
-    //   await queryRunner.rollbackTransaction();
-    //   return;
-    // }
-
-    // const organisation = organisationRepository.create({
-    //   name: DEFAULT_ORG_NAME,
-    //   createdAt: new Date().toISOString()
-    // });
-
-    // await organisationRepository.save(organisation);
-
     await organisationRepository
       .createQueryBuilder()
       .insert()
@@ -62,20 +46,30 @@ export async function setupDatabase() {
       .orIgnore()
       .execute();
 
-    for (const provider of DEFAULT_OAUTH_PROVIDERS) {
-      const authenticationProvider = authenticationProvidersRepository.create(provider);
-      await authenticationProvidersRepository.save(authenticationProvider);
-    }
+    await authenticationProvidersRepository
+      .createQueryBuilder()
+      .insert()
+      .into('authentication_providers')
+      .values(DEFAULT_OAUTH_PROVIDERS)
+      .orIgnore()
+      .execute();
 
-    for (const event of DEFAULT_WEBHOOK_EVENTS) {
-      event.createdAt = new Date().toISOString();
-      const webhookEvent = webhookEventsRepository.create(event);
-      await webhookEventsRepository.save(webhookEvent);
-    }
+    const webhookEvents = DEFAULT_WEBHOOK_EVENTS.map((event) => ({
+      ...event,
+      createdAt: new Date().toISOString()
+    }));
+
+    await webhookEventsRepository
+      .createQueryBuilder()
+      .insert()
+      .into('webhook_events')
+      .values(webhookEvents)
+      .orIgnore()
+      .execute();
 
     await queryRunner.commitTransaction();
 
-    console.log('Organisation and providers created successfully');
+    console.log('Database seed data and schema synced successfully');
   } catch (err) {
     await queryRunner.rollbackTransaction();
     console.error('Error seeding data:', err);
