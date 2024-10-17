@@ -9,7 +9,7 @@ import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, Unique, Index
   'webhookRequestId',
   'status'
 ])
-export class ApplicationWebhookLogs {
+export class ApplicationWebhookLog {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

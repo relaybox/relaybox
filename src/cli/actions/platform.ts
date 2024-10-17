@@ -1,6 +1,6 @@
-import * as db from '../db';
-import { AppDataSource } from '../../database/data-source';
-import { DEFAULT_OAUTH_PROVIDERS, DEFAULT_ORG_NAME, DEFAULT_WEBHOOK_EVENTS } from '../defaults';
+import * as db from '@/cli/db';
+import { AppDataSource } from '@/database/data-source';
+import { DEFAULT_OAUTH_PROVIDERS, DEFAULT_ORG_NAME, DEFAULT_WEBHOOK_EVENTS } from '@/cli/defaults';
 
 export async function setupDatabase() {
   await db.initialize({ synchronize: true });

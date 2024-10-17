@@ -1,7 +1,7 @@
 import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity('authentication_user_mfa_challenges')
-export class AuthenticationUserMfaChallenges {
+export class AuthenticationUserMfaChallenge {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

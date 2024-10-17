@@ -1,15 +1,15 @@
-import * as db from '../db';
-import { AppDataSource } from '../../database/data-source';
 import { input, select } from '@inquirer/prompts';
+import * as db from '@/cli/db';
+import { AppDataSource } from '@/database/data-source';
 import { createId } from '@paralleldrive/cuid2';
-import { generateSecret } from '../../lib/encryption';
-import { Application } from '../../database/entities/applications';
-import { Organisation } from '../../database/entities/organisations';
-import { Credential } from '../../database/entities/credentials';
-import { ApplicationAuthenticationPreferences } from '../../database/entities/application_authentication_preferences';
-import { CredentialPermission } from '../../database/entities/credential_permissions';
-import { CREDENTIAL_PERMISSIONS, DEFAULT_ORG_NAME } from '../defaults';
-import { ApplicationCredentials } from '../../types/application.types';
+import { generateSecret } from '@/lib/encryption';
+import { Application } from '@/database/entities/applications';
+import { Organisation } from '@/database/entities/organisations';
+import { Credential } from '@/database/entities/credentials';
+import { ApplicationAuthenticationPreference } from '@/database/entities/application_authentication_preferences';
+import { CredentialPermission } from '@/database/entities/credential_permissions';
+import { CREDENTIAL_PERMISSIONS, DEFAULT_ORG_NAME } from '@/cli/defaults';
+import { ApplicationCredentials } from '@/types/application.types';
 
 export function getApplicationCredentials(
   credential: Credential,
@@ -37,7 +37,7 @@ export async function createApplication() {
     const credentialsRepository = AppDataSource.getRepository(Credential);
     const credentialPermissionsRepository = AppDataSource.getRepository(CredentialPermission);
     const appAuthPreferencesRepository = AppDataSource.getRepository(
-      ApplicationAuthenticationPreferences
+      ApplicationAuthenticationPreference
     );
 
     const organisation = await organisationRepository.findOneBy({
@@ -133,5 +133,39 @@ export async function readApplicationData() {
     console.error('Error reading application data:', err);
   } finally {
     await db.end();
+  }
+}
+
+export async function selectApplication(): Promise<Application | undefined> {
+  try {
+    const applicationRepository = AppDataSource.getRepository(Application);
+
+    const applications = await applicationRepository.find();
+
+    if (!applications.length) {
+      return;
+    }
+
+    const appId = await select({
+      message: 'Choose an application',
+      choices: applications.map((app) => ({
+        name: app.name,
+        value: app.id
+      }))
+    });
+
+    const application = await applicationRepository.findOne({
+      where: {
+        id: appId
+      }
+    });
+
+    if (!application) {
+      return;
+    }
+
+    return application;
+  } catch (err) {
+    console.error('Error selecting application:', err);
   }
 }

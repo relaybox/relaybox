@@ -101,6 +101,8 @@ services:
   auth:
     image: relaybox/auth:3.10.0-beta.1
     depends_on:
+      cache:
+        condition: service_healthy
       db:
         condition: service_healthy
     environment:
@@ -184,12 +186,10 @@ services:
     depends_on:
       cache:
         condition: service_healthy
-      broker:
-        condition: service_healthy
       db:
         condition: service_healthy
     environment:
-      <<: [*db-config, *redis-config, *rabbitmq-config]
+      <<: [*db-config, *redis-config]
       LOG_LEVEL: ${LOG_LEVEL:-debug}
     networks:
       - platform_network

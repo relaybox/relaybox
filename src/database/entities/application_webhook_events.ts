@@ -4,7 +4,7 @@ import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, Unique, Index
 @Index('IDX_application_webhook_events_webhookId', ['webhookId'])
 @Index('IDX_application_webhook_events_webhookEventId', ['webhookEventId'])
 @Unique('UQ_application_webhook_events_webhookId_webhookEventId', ['webhookId', 'webhookEventId'])
-export class ApplicationWebhookEvents {
+export class ApplicationWebhookEvent {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

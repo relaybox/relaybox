@@ -1,10 +1,10 @@
-import * as db from '../db';
-import { AppDataSource } from '../../database/data-source';
+import * as db from '@/cli/db';
+import { AppDataSource } from '@/database/data-source';
 import { confirm, input, password, select } from '@inquirer/prompts';
-import { encrypt, generateSalt } from '../../lib/encryption';
-import { Application } from '../../database/entities/applications';
-import { AuthenticationProviders } from '../../database/entities/authentication_providers';
-import { ApplicationAuthenticationProviders } from '../../database/entities/application_authentication_providers';
+import { encrypt, generateSalt } from '@/lib/encryption';
+import { Application } from '@/database/entities/applications';
+import { AuthenticationProvider } from '@/database/entities/authentication_providers';
+import { ApplicationAuthenticationProvider } from '@/database/entities/application_authentication_providers';
 
 const PROXY_PORT = process.env.PROXY_PORT;
 
@@ -13,13 +13,13 @@ export async function registerOauthProvider() {
     await db.initialize();
 
     const applicationRepository = AppDataSource.getRepository(Application);
-    const authenticationProvidersRepository = AppDataSource.getRepository(AuthenticationProviders);
-    const appAuthProvidersRepository = AppDataSource.getRepository(
-      ApplicationAuthenticationProviders
+    const authenticationProviderRepository = AppDataSource.getRepository(AuthenticationProvider);
+    const appAuthProviderRepository = AppDataSource.getRepository(
+      ApplicationAuthenticationProvider
     );
 
     const applications = await applicationRepository.find();
-    const providers = await authenticationProvidersRepository.find();
+    const providers = await authenticationProviderRepository.find();
 
     const appId = await select({
       message: 'Choose an application',
@@ -49,7 +49,7 @@ export async function registerOauthProvider() {
     const encryptionSalt = generateSalt();
     const encryptedClientSecret = encrypt(clientSecret, encryptionSalt);
 
-    const appAuthProvider = appAuthProvidersRepository.create({
+    const appAuthProvider = appAuthProviderRepository.create({
       appId,
       providerId: provider.id,
       clientId,
@@ -59,7 +59,7 @@ export async function registerOauthProvider() {
       enabled: true
     });
 
-    await appAuthProvidersRepository.save(appAuthProvider);
+    await appAuthProviderRepository.save(appAuthProvider);
 
     console.log('OAuth provider registered successfully', {
       authorizedOrigin: `http://localhost:${PROXY_PORT}`,
@@ -76,13 +76,13 @@ export async function deregisterOauthProvider() {
   try {
     await db.initialize();
 
-    const appAuthProvidersRepository = AppDataSource.getRepository(
-      ApplicationAuthenticationProviders
+    const appAuthProviderRepository = AppDataSource.getRepository(
+      ApplicationAuthenticationProvider
     );
 
-    const providers = await appAuthProvidersRepository
+    const providers = await appAuthProviderRepository
       .createQueryBuilder('aap')
-      .innerJoin(AuthenticationProviders, 'ap', 'aap.providerId = ap.id')
+      .innerJoin(AuthenticationProvider, 'ap', 'aap.providerId = ap.id')
       .select(['aap.id', 'ap.friendlyName'])
       .getRawMany();
 
@@ -99,7 +99,7 @@ export async function deregisterOauthProvider() {
       }))
     });
 
-    const appAuthProvider = await appAuthProvidersRepository.findOne({
+    const appAuthProvider = await appAuthProviderRepository.findOne({
       where: {
         id: providerId
       }
@@ -119,7 +119,7 @@ export async function deregisterOauthProvider() {
       return;
     }
 
-    await appAuthProvidersRepository.delete({
+    await appAuthProviderRepository.delete({
       id: providerId
     });
 

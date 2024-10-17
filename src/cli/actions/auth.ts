@@ -1,8 +1,8 @@
-import * as db from '../db';
-import { AppDataSource } from '../../database/data-source';
+import * as db from '@/cli/db';
+import { AppDataSource } from '@/database/data-source';
 import { input } from '@inquirer/prompts';
-import { generateHash } from '../../lib/encryption';
-import { AuthenticationUser } from '../../database/entities/authentication_users';
+import { generateHash } from '@/lib/encryption';
+import { AuthenticationUser } from '@/database/entities/authentication_users';
 
 export async function verifyAuthUser() {
   try {
@@ -88,5 +88,7 @@ export async function getResetPasswordverificationCode() {
     }
   } catch (err) {
     console.log('Error getting password reset code:', err);
+  } finally {
+    await db.end();
   }
 }

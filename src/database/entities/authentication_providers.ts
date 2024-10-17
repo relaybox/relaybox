@@ -2,7 +2,7 @@ import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, Unique } from
 
 @Entity('authentication_providers')
 @Unique('UQ_authentication_providers_name', ['name'])
-export class AuthenticationProviders {
+export class AuthenticationProvider {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

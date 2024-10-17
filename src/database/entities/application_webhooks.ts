@@ -5,7 +5,7 @@ import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 @Index('IDX_application_webhooks_appPid', ['appPid'])
 @Index('IDX_application_webhooks_enabled', ['enabled'])
 @Index('IDX_application_webhooks_deletedAt', ['deletedAt'])
-export class ApplicationWebhooks {
+export class ApplicationWebhook {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

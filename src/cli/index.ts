@@ -3,13 +3,13 @@
 import 'reflect-metadata';
 import { Command } from 'commander';
 import { execSync } from 'child_process';
-import { configurePlatformConfig, createGlobalConfig, createProcessEnv } from './config';
 import path from 'path';
-import { setupDatabase, syncDatabase } from './actions/platform';
-import { createApplication, readApplicationData } from './actions/application';
-import { deregisterOauthProvider, registerOauthProvider } from './actions/oauth';
-import { getResetPasswordverificationCode, verifyAuthUser } from './actions/auth';
-import { createWebhook } from './actions/webhook';
+import { configurePlatformConfig, createGlobalConfig, createProcessEnv } from '@/cli/config';
+import { setupDatabase, syncDatabase } from '@/cli/actions/platform';
+import { createApplication, readApplicationData } from '@/cli/actions/application';
+import { deregisterOauthProvider, registerOauthProvider } from '@/cli/actions/oauth';
+import { getResetPasswordverificationCode, verifyAuthUser } from '@/cli/actions/auth';
+import { createWebhook, editWebhook } from '@/cli/actions/webhook';
 
 const program = new Command();
 
@@ -123,6 +123,10 @@ program
     switch (action) {
       case 'create':
         await createWebhook();
+        break;
+
+      case 'edit':
+        await editWebhook();
         break;
 
       default:
