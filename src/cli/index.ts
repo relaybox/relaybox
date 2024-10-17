@@ -9,7 +9,7 @@ import { setupDatabase, syncDatabase } from '@/cli/actions/platform';
 import { createApplication, readApplicationData } from '@/cli/actions/application';
 import { deregisterOauthProvider, registerOauthProvider } from '@/cli/actions/oauth';
 import { getResetPasswordverificationCode, verifyAuthUser } from '@/cli/actions/auth';
-import { createWebhook, editWebhook } from '@/cli/actions/webhook';
+import { createWebhook, editWebhook, listWebhooks } from '@/cli/actions/webhook';
 
 const program = new Command();
 
@@ -127,6 +127,10 @@ program
 
       case 'edit':
         await editWebhook();
+        break;
+
+      case 'list':
+        await listWebhooks();
         break;
 
       default:

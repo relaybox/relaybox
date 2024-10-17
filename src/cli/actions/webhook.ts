@@ -188,6 +188,52 @@ export async function editWebhook() {
   }
 }
 
+export async function listWebhooks() {
+  try {
+    await db.initialize();
+
+    const applicationWebhookRepository = AppDataSource.getRepository(ApplicationWebhook);
+
+    const application = await selectApplication();
+
+    if (!application) {
+      return;
+    }
+
+    const webhooks = await applicationWebhookRepository.find({
+      where: {
+        appId: application.id
+      }
+    });
+
+    if (!webhooks.length) {
+      console.log('No webhooks found');
+      return;
+    }
+
+    const webhookId = await select({
+      message: 'Choose a webhook',
+      choices: webhooks.map((webhook) => ({
+        name: `${webhook.name} - ${webhook.url}`,
+        value: webhook.id
+      }))
+    });
+
+    const webhook = await getWebhookById(webhookId);
+
+    if (!webhook) {
+      console.log(`Unable to find webhook`);
+      return;
+    }
+
+    console.log(webhook);
+  } catch (err) {
+    console.error('Error listing webhooks:', err);
+  } finally {
+    await db.end();
+  }
+}
+
 export async function getWebhookById(
   id: string
 ): Promise<(ApplicationWebhook & { webhookEvents: ApplicationWebhookEvent[] }) | undefined> {
