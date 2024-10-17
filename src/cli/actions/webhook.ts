@@ -5,7 +5,7 @@ import { generateSecret } from '@/lib/encryption';
 import { WebhookEvents } from '@/database/entities/webhook_events';
 import { ApplicationWebhook } from '@/database/entities/application_webhooks';
 import { ApplicationWebhookEvent } from '@/database/entities/application_webhook_events';
-import { selectApplication } from './application';
+import { selectApplication } from '@/cli/actions/application';
 
 export async function createWebhook() {
   try {
