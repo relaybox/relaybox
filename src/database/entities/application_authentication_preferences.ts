@@ -1,7 +1,7 @@
 import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity('application_authentication_preferences')
-export class ApplicationAuthenticationPreferences {
+export class ApplicationAuthenticationPreference {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

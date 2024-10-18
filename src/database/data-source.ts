@@ -22,13 +22,17 @@ import { ApplicationAdminUser } from './entities/application_admin_users';
 import { AuthenticationUser } from './entities/authentication_users';
 import { AuthenticationUserVerification } from './entities/authentication_user_verification';
 import { AuthenticationUserIdentity } from './entities/authentication_user_identities';
-import { AuthenticationUserMfaFactors } from './entities/authentication_user_mfa_factors';
-import { AuthenticationUserMfaChallenges } from './entities/authentication_user_mfa_challenges';
-import { AuthenticationUsersApplications } from './entities/authentication_users_applications';
-import { AuthenticationProviders } from './entities/authentication_providers';
-import { ApplicationAuthenticationProviders } from './entities/application_authentication_providers';
-import { ApplicationAuthenticationPreferences } from './entities/application_authentication_preferences';
+import { AuthenticationUserMfaFactor } from './entities/authentication_user_mfa_factors';
+import { AuthenticationUserMfaChallenge } from './entities/authentication_user_mfa_challenges';
+import { AuthenticationUsersApplication } from './entities/authentication_users_applications';
+import { AuthenticationProvider } from './entities/authentication_providers';
+import { ApplicationAuthenticationProvider } from './entities/application_authentication_providers';
+import { ApplicationAuthenticationPreference } from './entities/application_authentication_preferences';
 import { AuthenticationActivityLog } from './entities/authentication_activity_logs';
+import { ApplicationWebhook } from './entities/application_webhooks';
+import { WebhookEvents } from './entities/webhook_events';
+import { ApplicationWebhookLog } from './entities/application_webhook_logs';
+import { ApplicationWebhookEvent } from './entities/application_webhook_events';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -57,12 +61,16 @@ export const AppDataSource = new DataSource({
     AuthenticationUser,
     AuthenticationUserVerification,
     AuthenticationUserIdentity,
-    AuthenticationUserMfaFactors,
-    AuthenticationUserMfaChallenges,
-    AuthenticationUsersApplications,
-    AuthenticationProviders,
-    ApplicationAuthenticationProviders,
-    ApplicationAuthenticationPreferences,
-    AuthenticationActivityLog
+    AuthenticationUserMfaFactor,
+    AuthenticationUserMfaChallenge,
+    AuthenticationUsersApplication,
+    AuthenticationProvider,
+    ApplicationAuthenticationProvider,
+    ApplicationAuthenticationPreference,
+    AuthenticationActivityLog,
+    ApplicationWebhook,
+    ApplicationWebhookLog,
+    ApplicationWebhookEvent,
+    WebhookEvents
   ]
 });

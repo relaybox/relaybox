@@ -1,7 +1,8 @@
 import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity('authentication_providers')
-export class AuthenticationProviders {
+@Unique('UQ_authentication_providers_name', ['name'])
+export class AuthenticationProvider {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

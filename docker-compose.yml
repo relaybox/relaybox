@@ -82,7 +82,7 @@ services:
       retries: 5
 
   core:
-    image: relaybox/core:2.6.2
+    image: relaybox/core:2.7.2
     depends_on:
       cache:
         condition: service_healthy
@@ -99,12 +99,14 @@ services:
       - platform_network
 
   auth:
-    image: relaybox/auth:3.9.0
+    image: relaybox/auth:3.10.1
     depends_on:
+      cache:
+        condition: service_healthy
       db:
         condition: service_healthy
     environment:
-      <<: *db-config
+      <<: [*db-config, *redis-config]
       EMULATOR: true
       AUTH_SERVICE_URL: ${AUTH_SERVICE_URL:-http://localhost:${PROXY_PORT:-9000}/auth/dev}
       AUTO_VERIFY: ${AUTO_VERIFY:-true}
@@ -175,6 +177,19 @@ services:
         condition: service_healthy
     environment:
       <<: [*db-config, *redis-config, *rabbitmq-config]
+      LOG_LEVEL: ${LOG_LEVEL:-debug}
+    networks:
+      - platform_network
+
+  webhook:
+    image: relaybox/webhook:1.0.4
+    depends_on:
+      cache:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    environment:
+      <<: [*db-config, *redis-config]
       LOG_LEVEL: ${LOG_LEVEL:-debug}
     networks:
       - platform_network

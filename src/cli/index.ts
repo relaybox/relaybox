@@ -2,23 +2,14 @@
 
 import 'reflect-metadata';
 import { Command } from 'commander';
-import {
-  createApplication,
-  deregisterOauthProvider,
-  getResetPasswordverificationCode,
-  readApplicationData,
-  registerOauthProvider,
-  setupDatabase,
-  syncDatabase,
-  verifyAuthUser
-} from './actions';
 import { execSync } from 'child_process';
-import { configurePlatformConfig, createGlobalConfig, createProcessEnv } from './config';
 import path from 'path';
-import { promisify } from 'util';
-import { create } from 'domain';
-
-const sleep = promisify(setTimeout);
+import { configurePlatformConfig, createGlobalConfig, createProcessEnv } from '@/cli/config';
+import { setupDatabase, syncDatabase } from '@/cli/actions/platform';
+import { createApplication, readApplicationData } from '@/cli/actions/application';
+import { deregisterOauthProvider, registerOauthProvider } from '@/cli/actions/oauth';
+import { getResetPasswordverificationCode, verifyAuthUser } from '@/cli/actions/auth';
+import { createWebhook, editWebhook, listWebhooks } from '@/cli/actions/webhook';
 
 const program = new Command();
 
@@ -34,6 +25,7 @@ program
         createGlobalConfig();
         const { proxyPort } = createProcessEnv();
         execSync('./shell/platform-up.sh', { stdio: 'inherit' });
+        await syncDatabase();
         await setupDatabase();
         console.log(`Platform running at http://localhost:${proxyPort}`);
         break;
@@ -42,6 +34,7 @@ program
         console.log('Syncing platform...');
         execSync('./shell/platform-up.sh', { stdio: 'inherit' });
         await syncDatabase();
+        await setupDatabase();
         console.log('Platform synced successfully.');
         break;
 
@@ -114,6 +107,30 @@ program
 
       case 'reset-password':
         await getResetPasswordverificationCode();
+        break;
+
+      default:
+        console.error(`Unknown action: ${action}`);
+    }
+  });
+
+program
+  .command('webhook <action>')
+  .description('Manage webhook actions')
+  .action(async (action) => {
+    process.chdir(path.join(__dirname, '..'));
+
+    switch (action) {
+      case 'create':
+        await createWebhook();
+        break;
+
+      case 'edit':
+        await editWebhook();
+        break;
+
+      case 'list':
+        await listWebhooks();
         break;
 
       default:

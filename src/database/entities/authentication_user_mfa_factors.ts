@@ -2,7 +2,7 @@ import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, Unique } from
 
 @Entity('authentication_user_mfa_factors')
 @Unique('UQ_authentication_user_mfa_factors_uid_type', ['uid', 'type'])
-export class AuthenticationUserMfaFactors {
+export class AuthenticationUserMfaFactor {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

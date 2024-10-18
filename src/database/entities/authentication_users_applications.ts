@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity('authentication_users_applications')
 @Unique('UQ_authentication_users_applications', ['orgId', 'appId', 'uid'])
-export class AuthenticationUsersApplications {
+export class AuthenticationUsersApplication {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
