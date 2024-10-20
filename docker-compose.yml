@@ -94,7 +94,7 @@ services:
       <<: [*db-config, *redis-config, *rabbitmq-config]
       RELAYBOX_AUTH_SERVICE_URL: http://auth:4005
       WS_IDLE_TIMEOUT_MS: ${WS_IDLE_TIMEOUT_MS:-30000}
-      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
     networks:
       - platform_network
 
@@ -111,7 +111,7 @@ services:
       AUTH_SERVICE_URL: ${AUTH_SERVICE_URL:-http://localhost:${PROXY_PORT:-9000}/auth/dev}
       AUTO_VERIFY: ${AUTO_VERIFY:-true}
       JWT_ISSUER: ${JWT_ISSUER:-https://relaybox.net}
-      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
       SMTP_HOST: ${SMTP_HOST:-''}
       SMTP_USERNAME: ${SMTP_USERNAME:-''}
       SMTP_PASSWORD: ${SMTP_PASSWORD:-''}
@@ -131,7 +131,7 @@ services:
     environment:
       <<: [*db-config, *redis-config, *rabbitmq-config]
       WS_IDLE_TIMEOUT_MS: ${WS_IDLE_TIMEOUT_MS:-30000}
-      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
       CRON_SCHEDULE_MINS: 5
     networks:
       - platform_network
@@ -147,7 +147,7 @@ services:
         condition: service_healthy
     environment:
       <<: [*db-config, *redis-config, *rabbitmq-config]
-      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
     networks:
       - platform_network
 
@@ -162,7 +162,7 @@ services:
         condition: service_healthy
     environment:
       <<: [*db-config, *redis-config, *rabbitmq-config]
-      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
     networks:
       - platform_network
 
@@ -177,7 +177,7 @@ services:
         condition: service_healthy
     environment:
       <<: [*db-config, *redis-config, *rabbitmq-config]
-      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
     networks:
       - platform_network
 
@@ -190,7 +190,9 @@ services:
         condition: service_healthy
     environment:
       <<: [*db-config, *redis-config]
-      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      LOG_STREAM_MAX_LEN: 1000
+      LOG_STREAM_BUFFER_MAX_LENGTH: 100
     networks:
       - platform_network
 
