@@ -5,7 +5,7 @@ import { input, select } from '@inquirer/prompts';
 
 const DEFAULT_PROXY_PORT = 9000;
 const DEFAULT_DB_PORT = 9001;
-const DEFAULT_LOG_LEVEL = 'debug';
+const DEFAULT_LOG_LEVEL = 'info';
 
 interface Config {
   proxy?: {
