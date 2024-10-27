@@ -87,7 +87,7 @@ Creates an application and provides a `publicKey` and `apiKey`.
 relaybox application create
 ```
 
-A prompt will appear asking you to choose a name for your application. Once you've created an application, you will be provided with a `publicKey` and `apiKey` for use with the <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client">client</a> and <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-rest">rest</a> SDK libraries.
+A prompt will appear asking you to choose a name for your application. Once you've created an application, you will be provided with a `publicKey` and `apiKey` that can be used with the <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-client">client</a> and <a target="blank" href="https://relaybox.net/docs/api-reference/relaybox-rest">rest</a> SDK libraries.
 
 **Output:**
 
