@@ -41,7 +41,7 @@ export async function setupDatabase() {
 
     await queryRunner.commitTransaction();
 
-    console.log('Database seed data and schema synced successfully');
+    console.log('Database content and schema synced successfully');
   } catch (err) {
     await queryRunner.rollbackTransaction();
     console.error('Error seeding data:', err);
