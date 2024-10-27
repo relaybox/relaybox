@@ -1,3 +1,5 @@
+![npm version](https://img.shields.io/npm/v/relaybox)
+
 # <a href="https://relaybox.net" target="blank">RelayBox</a> | Kickstart realtime web and mobile applications
 
 RelayBox is a high-perfomance, developer-focused platform designed to accelerate realtime web and mobile app development. Get your <a href="https://relaybox.net">free API key</a> today to power up your applications and services.
