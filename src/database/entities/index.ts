@@ -26,6 +26,7 @@ import { ApplicationWebhook } from './application_webhooks';
 import { WebhookEvents } from './webhook_events';
 import { ApplicationWebhookLog } from './application_webhook_logs';
 import { ApplicationWebhookEvent } from './application_webhook_events';
+import { MessageHistory } from './message_history';
 
 export default [
   Organisation,
@@ -55,5 +56,6 @@ export default [
   ApplicationWebhook,
   ApplicationWebhookLog,
   ApplicationWebhookEvent,
-  WebhookEvents
+  WebhookEvents,
+  MessageHistory
 ];
