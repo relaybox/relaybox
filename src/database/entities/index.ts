@@ -27,6 +27,9 @@ import { WebhookEvents } from './webhook_events';
 import { ApplicationWebhookLog } from './application_webhook_logs';
 import { ApplicationWebhookEvent } from './application_webhook_events';
 import { MessageHistory } from './message_history';
+import { Asset } from './assets';
+import { AssetUser } from './asset_users';
+import { RoomMember } from './room_members';
 
 export default [
   Organisation,
@@ -39,6 +42,7 @@ export default [
   DeliveryMetric,
   Room,
   RoomSession,
+  RoomMember,
   Connection,
   AdminUser,
   OrganisationAdminUser,
@@ -57,5 +61,7 @@ export default [
   ApplicationWebhookLog,
   ApplicationWebhookEvent,
   WebhookEvents,
-  MessageHistory
+  MessageHistory,
+  Asset,
+  AssetUser
 ];
