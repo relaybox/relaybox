@@ -10,6 +10,9 @@ export class MessageHistory {
   @PrimaryColumn('uuid')
   id: string;
 
+  // @Column('uuid')
+  // appId: string;
+
   @Column()
   appPid: string;
 
